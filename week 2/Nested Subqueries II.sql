@@ -35,4 +35,35 @@ select empName,location,deptName from empData join departments on empData.deptID
 select empName,location,deptName from empData join departments on empData.deptID = departments.deptID where exists( 
    select deptID from departments where not exists (
    select location from departments where location ='Pune') );
- 
+   
+-- having clause and with clause 
+   
+   
+ /*
+ WHERE  → filters individual rows
+GROUP BY → creates groups
+HAVING → filters groups
+What does COUNT(*) actually mean?
+Count how many rows are present.
+*/
+
+select count(*) from empData; -- returns 5 , How many rows are there?	
+
+-- Find departments having more than 1 employee
+SELECT deptID, COUNT(*) FROM empData GROUP BY deptID 
+HAVING COUNT(*) > 1;
+
+SELECT deptID, COUNT(*) FROM empData GROUP BY deptID;
+
+
+-- Which department names have more than one employee?
+select d.deptName,count(*) 
+from empData e join departments d on e.deptID = d.deptID
+group by d.deptName having count(*)>1;
+    
+-- Find departments whose average employee salary is greater than 55,000
+select d.deptName,max(e.salary),avg(e.salary),count(*) 
+from empData e join departments d on e.deptId = d.deptId 
+group by d.deptName
+having avg(salary) > 55000;
+
